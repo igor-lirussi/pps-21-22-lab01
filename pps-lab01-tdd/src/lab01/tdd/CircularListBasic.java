@@ -46,7 +46,6 @@ public class CircularListBasic implements CircularList {
         index--;
         if (index<0) index=-index;
         index = index % list.size();
-        System.out.println(index);
         return Optional.of(list.get(index));
     }
 
@@ -57,6 +56,15 @@ public class CircularListBasic implements CircularList {
 
     @Override
     public Optional<Integer> next(SelectStrategy strategy) {
-        return Optional.empty();
+        if (list.isEmpty())  {
+            return Optional.empty();
+        }
+        int counter = 0;
+        do {
+            this.next();
+            counter++;
+            if (counter > list.size()) return Optional.empty();
+        } while ( ! strategy.apply(list.get(index)) );
+        return Optional.of(list.get(index));
     }
 }
